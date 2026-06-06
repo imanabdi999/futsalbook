@@ -1,52 +1,12 @@
-# ⚽ FutsalBook
+#  FutsalBook
 **Aplikasi Pengelolaan Jadwal Futsal Berbasis Sistem Menu**
 
 FutsalBook adalah sistem manajemen lapangan futsal yang komprehensif. Aplikasi ini dirancang untuk mempermudah pengelola (admin) dalam mengatur operasional penyewaan lapangan futsal melalui **18 pilihan menu** yang terstruktur ke dalam empat modul utama: Manajemen Penyewa, Manajemen Lapangan, Transaksi & Jadwal, serta Statistik.
 
 ---
 
-## ✨ Fitur Unggulan
 
-Aplikasi ini mengimplementasikan berbagai algoritma dasar untuk memastikan pengelolaan data berjalan cepat dan efisien.
-
-### 👥 Manajemen Penyewa
-* **Operasional Dasar:** Tambah, Ubah, dan Hapus data pelanggan.
-* **Pencarian Cepat:**
-  * Berdasarkan **Nama** menggunakan algoritma *Sequential Search*.
-  * Berdasarkan **Nomor Telepon** menggunakan algoritma *Binary Search*.
-
-### 🏟️ Manajemen Lapangan
-* **Katalog:** Tambah, Ubah, dan Hapus data lapangan futsal yang tersedia beserta tarifnya.
-
-### 📅 Transaksi & Penjadwalan
-* **Pembuatan Jadwal:** Tambah slot jadwal kosong untuk disewakan.
-* **Monitoring:** Pantau daftar jadwal yang masih **Tersedia** dan jadwal yang sudah di-**Booking**.
-* **Reservasi:** Proses *booking* lapangan yang langsung mengikat data penyewa dan lapangan.
-* **Pengurutan Data (Sorting):**
-  * Urutkan tampilan jadwal berdasarkan **Jam Mulai** menggunakan *Selection Sort*.
-  * Urutkan tampilan jadwal berdasarkan **Tarif Lapangan** menggunakan *Insertion Sort*.
-
-### 📊 Statistik & Laporan
-* **Buku Kas:** Kalkulasi otomatis total pemasukan (profit) bulanan.
-* **Analisis Data:** Menentukan **Jam Favorit** yang paling sering dipesan oleh pelanggan untuk membantu strategi pemasaran.
-
----
-
-## 🏗️ Struktur & Arsitektur Data
-
-Program ini menyimpan state di dalam memori menggunakan tipe bentukan (`struct`) dan struktur data *Array*. Jumlah data yang aktif di dalam array akan selalu dilacak secara *real-time* menggunakan variabel *counter* khusus (`nPenyewa`, `nLapangan`, `nJadwal`).
-
-Berikut adalah relasi entitas datanya:
-
-| Entitas (`Struct`) | Atribut / Properti |
-| :--- | :--- |
-| **`Lapangan`** | `id`, `jenis`, `tarif` |
-| **`Penyewa`** | `id`, `nama`, `notelp` |
-| **`Jadwal`** | `id`, `tanggal`, `bulan`, `jamMulai`, `jamSelesai`, `tersedia`, `idLapangan`, `idPenyewa`, `profit` |
-
----
-
-## 🚀 Cara Menjalankan Program
+## Cara Menjalankan Program
 
 1. *Clone* repository ini ke mesin lokal kamu.
    ```bash
