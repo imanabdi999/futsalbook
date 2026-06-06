@@ -8,6 +8,4 @@ FutsalBook adalah sistem manajemen lapangan futsal yang komprehensif. Aplikasi i
 
 ## Cara Menjalankan Program
 
-1. *Clone* repository ini ke mesin lokal kamu.
-   ```bash
-   git clone [https://github.com/username-kamu/futsalbook.git](https://github.com/username-kamu/futsalbook.git)
+Download Futsal-Book.exe dan jalankan.
