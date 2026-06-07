@@ -361,6 +361,7 @@ func searchNamaPenyewa(x tabPenyewa, n int){
 func searchNotelpPenyewa(x tabPenyewa, n int){
 	var left, right, mid, idx int
 	var target int
+	insertionSortPenyewaNotelp(&x, n)
 	fmt.Print("Cari data penyewa berdasarkan No Telp: ")
 	fmt.Scan(&target)
 	left = 0
@@ -384,6 +385,24 @@ func searchNotelpPenyewa(x tabPenyewa, n int){
 		fmt.Printf("%-4s %-10s %-10s\n", "ID", "Nama", "No Telp")
 		fmt.Printf("%-4s %-10s %-10d\n", x[idx].id, x[idx].nama, x[idx].notelp)
 	}	
+}
+
+func insertionSortPenyewaNotelp(x *tabPenyewa, n int) {
+	var pass, i int
+	var temp penyewa
+
+	pass = 1
+	for pass < n {
+		temp = x[pass]
+		i = pass
+		for i > 0 && x[i-1].notelp > temp.notelp {
+			x[i] = x[i-1]
+			i--
+		}
+
+		x[i] = temp
+		pass++
+	}
 }
 
 func selectionSortJadwalMulai(x *tabJadwal, n int) {
