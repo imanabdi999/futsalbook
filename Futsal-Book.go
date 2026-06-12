@@ -6,8 +6,7 @@ type lapangan struct {
 	tarif float64
 }
 type penyewa struct{
-	id, nama string
-	notelp int
+	id, nama, notelp string
 }
 type jadwal struct {
 	id string
@@ -80,7 +79,6 @@ func main() {
 		} else if pilihan == 5 {
 			searchNamaPenyewa(dataPenyewa, nPenyewa)
 		} else if pilihan == 6 {
-			// binary search terlebih dahulu
 			searchNotelpPenyewa(dataPenyewa, nPenyewa)
 		} else if pilihan == 7 {
 			tambahLapangan(&dataLapangan, &nLapangan)
@@ -181,7 +179,7 @@ func showPenyewa(x tabPenyewa, n int){
 	} else {
 		fmt.Printf("%-4s %-10s %-10s\n", "ID", "Nama", "No Telp")
 		for i=0; i<n; i++ {
-			fmt.Printf("%-4s %-10s %-10d\n", x[i].id, x[i].nama, x[i].notelp)
+			fmt.Printf("%-4s %-10s %-10s\n", x[i].id, x[i].nama, x[i].notelp)
 		}
 	}
 }
@@ -258,7 +256,7 @@ func showLapangan(x tabLapangan, n int){
 func tambahJadwal(x *tabJadwal, n *int) {
 	var in, idL string
 	var tgl, bulan, mulai, akhir int
-	var valid bool
+	var valid, bentrok bool
 	fmt.Print("Input data jadwal kosong (id, tanggal, bulan, jamMulai, jamSelesai, idLapangan)\nex: J01 5 12 19 21 L01\nKetik 'STOP' untuk berhenti.\n")
 	fmt.Scan(&in)
 	
@@ -282,6 +280,14 @@ func tambahJadwal(x *tabJadwal, n *int) {
 			valid = false
 		}
 
+		if valid { // mengecek bentrok
+			bentrok = cekBentrok(*x, *n, tgl, bulan, mulai, akhir, idL)
+			if bentrok {
+				valid = false
+				fmt.Println("ERROR: Ada jadwal yang bertabrakan")
+			}
+		}
+
 		if valid {
 			x[*n].id = in
 			x[*n].tanggal = tgl
@@ -298,6 +304,19 @@ func tambahJadwal(x *tabJadwal, n *int) {
 		fmt.Scan(&in)
 	}
 	fmt.Printf("Banyak slot jadwal operasional yang dibuat: %d\n", *n)
+}
+
+//fungsi khusus untuk tambahJadwal
+func cekBentrok(x tabJadwal, n int, tgl int, bln int, mulai int, akhir int, idL string) bool {
+	var i int
+	for i = 0; i < n; i++ {
+		if x[i].tanggal == tgl && x[i].bulan == bln && x[i].idLapangan == idL {
+			if mulai < x[i].jamSelesai && akhir > x[i].jamMulai {
+				return true
+			}
+		}
+	}
+	return false 
 }
 
 func booking(x *tabJadwal, nJadwal, nPenyewa, nLapangan int, y tabPenyewa, z tabLapangan){
@@ -334,17 +353,16 @@ func booking(x *tabJadwal, nJadwal, nPenyewa, nLapangan int, y tabPenyewa, z tab
 			for i=0; i<nLapangan; i++ {
 				if z[i].id == x[idxJ].idLapangan {
 					idxL = i
-				}
 			}
 			x[idxJ].idPenyewa = penyewa
 			x[idxJ].tersedia = false
 			x[idxJ].profit = x[idxJ].profit + (float64(x[idxJ].jamSelesai)-float64(x[idxJ].jamMulai))*z[idxL].tarif
 			fmt.Println("Jadwal berhasil dibooking.")
+			}
 		}
 	} else {
 		fmt.Println("Data penyewa tidak ditemukan")
 	}
-
 }
 
 func jadwalKosong(x tabJadwal, nJadwal int, z tabLapangan, nLap int) {
@@ -389,14 +407,14 @@ func searchNamaPenyewa(x tabPenyewa, n int){
 	} else {
 		fmt.Printf("Data ditemukan di urutan ke-%d\n", idx+1)
 		fmt.Printf("%-4s %-10s %-10s\n", "ID", "Nama", "No Telp")
-		fmt.Printf("%-4s %-10s %-10d\n", x[idx].id, x[idx].nama, x[idx].notelp)
+		fmt.Printf("%-4s %-10s %-10s\n", x[idx].id, x[idx].nama, x[idx].notelp)
 	}
 }
 
 func searchNotelpPenyewa(x tabPenyewa, n int){
 	//binary search
 	var left, right, mid, idx int
-	var target int
+	var target string
 	insertionSortPenyewaNotelp(&x, n)
 	fmt.Print("Cari data penyewa berdasarkan No Telp: ")
 	fmt.Scan(&target)
@@ -419,10 +437,11 @@ func searchNotelpPenyewa(x tabPenyewa, n int){
 	} else {
 		fmt.Printf("Data ditemukan di urutan ke-%d\n", idx+1)
 		fmt.Printf("%-4s %-10s %-10s\n", "ID", "Nama", "No Telp")
-		fmt.Printf("%-4s %-10s %-10d\n", x[idx].id, x[idx].nama, x[idx].notelp)
+		fmt.Printf("%-4s %-10s %-10s\n", x[idx].id, x[idx].nama, x[idx].notelp)
 	}	
 }
 
+//procedure khusus untuk procedure diatas karena memerlukan data yg terurut
 func insertionSortPenyewaNotelp(x *tabPenyewa, n int) {
 	var pass, i int
 	var temp penyewa
@@ -439,7 +458,7 @@ func insertionSortPenyewaNotelp(x *tabPenyewa, n int) {
 		x[i] = temp
 		pass++
 	}
-}
+} 
 
 func selectionSortJadwalMulai(x *tabJadwal, n int) {
 	var pass, i, idx int
